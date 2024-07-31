@@ -1,0 +1,41 @@
+import pandas as pd
+
+import numpy as np
+file_path = r"C:\Users\year3\Downloads\Lab Session Data.xlsx"
+data = pd.read_excel(file_path, sheet_name='Purchase data')
+print(data.columns)
+relevant_columns = ['Candies (#)', 'Mangoes (Kg)', 'Milk Packets (#)', 'Payment (Rs)']
+data = data[relevant_columns]
+data = data.apply(pd.to_numeric, errors='coerce').dropna()
+
+print(data.head())
+A = data[['Candies (#)', 'Mangoes (Kg)', 'Milk Packets (#)']].values 
+C = data['Payment (Rs)'].values
+num_features = A.shape[1]
+num_vectors = A.shape[0]   
+rank_A = np.linalg.matrix_rank(A)
+A_pseudo_inv = np.linalg.pinv(A)
+cost_vector = A_pseudo_inv @ C 
+print(f"Dimensionality of the vector space: {num_features}")
+
+print(f"Number of vectors in the vector space: {num_vectors}")
+
+print(f"Rank of Matrix A: {rank_A}")
+
+print(f"Cost of each product available for sale: {cost_vector}")
+
+
+....................................................................................
+import pandas as pd
+import numpy as np
+ile_path = r"C:\Users\year3\Downloads\Lab Session Data.xlsx"
+data = pd.read_excel(file_path, sheet_name='Purchase data')
+print(data.columns)
+A = data[['Candies (#)', 'Mangoes (Kg)', 'Milk Packets (#)']].values 
+C = data['Payment (Rs)'].values.reshape(-1, 1)
+A_pseudo_inv = np.linalg.pinv(A)
+
+X = A_pseudo_inv @ C
+
+print("Model vector X (cost of each product):")
+print(X)
